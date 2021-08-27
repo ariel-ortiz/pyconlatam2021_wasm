@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      <script src="https://cdn.jsdelivr.net/pyodide/v0.18.0/full/pyodide.js"></script>
+  </head>
+  <body>
+    <h1>Ejemplo de uso de Pyodide</h1>
+    <p>
+      El valor de &pi; calculado usando Python:
+    </p>
+    <h3 id="valor_pi" style="text-indent: 30px">
+      <em>Un momento...</em>
+    </h3>
+    <script>
+      async function main(){
+        let pyodide = await loadPyodide({
+          indexURL: "https://cdn.jsdelivr.net/pyodide/v0.18.0/full/"
+        });
+        let resultadoFetch = await fetch("calcular_pi.py");
+        let codigoPython = await resultadoFetch.text();
+        console.log(codigoPython);
+        pyodide.runPython(codigoPython);
+        let result = pyodide.runPython("f'{calcular_pi(10_000):.9f}'");
+        document.getElementById("valor_pi").innerHTML = result;
+      }
+      main();
+    </script>
+  </body>
+</html>
